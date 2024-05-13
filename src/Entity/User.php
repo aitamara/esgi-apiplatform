@@ -3,34 +3,44 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ApiResource(
-    normalizationContext: ['groups' => ['lire']],
-    denormalizationContext: ['groups' => ['modifier']],
+    normalizationContext: ['groups' => ['read_user']],
+    denormalizationContext: ['groups' => ['write_user']],
+    operations: [
+        new GetCollection(
+            normalizationContext: ['groups' => ['read_user']]
+        ),
+        new Post (
+            denormalizationContext: ['groups' => ['write_user']]
+        )
+    ]
 )]
 class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    //#[Groups(['lire'])]
+    #[Groups(['read_user'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    //#[Groups(['lire', 'modifier'])]
+    #[Groups(['read_user', 'write_user'])]
     private ?string $username = null;
 
     #[ORM\Column(length: 255)]
-    //#[Groups(['lire', 'modifier'])]
+    #[Groups(['write_user'])]
     private ?string $password = null;
 
     #[ORM\Column(type: Types::ARRAY)]
-    //#[Groups(['lire'])]
+    #[Groups(['read_user', 'write_user'])]
     private array $role = [];
 
     public function getId(): ?int
