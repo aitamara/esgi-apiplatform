@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\RecipeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 #[ApiResource]
@@ -20,6 +21,7 @@ class Recipe
     private ?string $name = null;
 
     #[ORM\Column(type: Types::ARRAY)]
+    #[Assert\Count(min: 3, minMessage: "Une recette doit avoir au moins 3 ingrédients.")]
     private array $ingredients = [];
 
     #[ORM\Column(type: Types::TEXT)]
@@ -40,6 +42,8 @@ class Recipe
     #[ORM\ManyToOne(inversedBy: 'recipes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?category $category = null;
+
+    // Getters and setters
 
     public function getId(): ?int
     {

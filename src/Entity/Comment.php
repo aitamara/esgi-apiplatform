@@ -3,34 +3,53 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read_comment']],
+    denormalizationContext: ['groups' => ['write_comment']],
+    operations: [
+        new GetCollection(
+            normalizationContext: ['groups' => ['read_comment']]
+        ),
+        new Post (
+            denormalizationContext: ['groups' => ['write_comment']]
+        )
+    ]
+)]
 class Comment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read_comment', 'write_comment'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['read_comment', 'write_comment'])]
     private ?string $content = null;
 
     #[ORM\Column]
+    #[Groups(['read_comment', 'write_comment'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['read_comment', 'write_comment'])]
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read_comment', 'write_comment'])]
     private ?recipe $recipe = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read_comment', 'write_comment'])]
     private ?user $commentBy = null;
 
     public function getId(): ?int
