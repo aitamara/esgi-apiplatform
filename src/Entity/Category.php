@@ -20,13 +20,13 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: Recipe::class, mappedBy: 'category')]
+    /*#[ORM\OneToMany(targetEntity: Recipe::class, mappedBy: 'category')]
     private Collection $recipes;
 
     public function __construct()
     {
         $this->recipes = new ArrayCollection();
-    }
+    }*/
 
     public function getId(): ?int
     {
@@ -44,10 +44,11 @@ class Category
 
         return $this;
     }
-
+    /*
     /**
      * @return Collection<int, Recipe>
      */
+    /*
     public function getRecipes(): Collection
     {
         return $this->recipes;
@@ -73,5 +74,5 @@ class Category
         }
 
         return $this;
-    }
+    }*/
 }

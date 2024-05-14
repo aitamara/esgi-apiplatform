@@ -24,7 +24,7 @@ class Rating
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $ratedBy = null;
+    private ?User $ratedBy = null;
 
     public function getId(): ?int
     {
@@ -62,12 +62,12 @@ class Rating
         return $this;
     }
 
-    public function getRatedBy(): ?user
+    public function getRatedBy(): ?User
     {
         return $this->ratedBy;
     }
 
-    public function setRatedBy(?user $ratedBy): static
+    public function setRatedBy(?User $ratedBy): static
     {
         $this->ratedBy = $ratedBy;
 

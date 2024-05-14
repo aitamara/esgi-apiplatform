@@ -50,7 +50,7 @@ class Comment
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['read_comment', 'write_comment'])]
-    private ?user $commentBy = null;
+    private ?User $commentBy = null;
 
     public function getId(): ?int
     {
@@ -112,12 +112,12 @@ class Comment
         return $this;
     }
 
-    public function getCommentBy(): ?user
+    public function getCommentBy(): ?User
     {
         return $this->commentBy;
     }
 
-    public function setCommentBy(?user $commentBy): static
+    public function setCommentBy(?User $commentBy): static
     {
         $this->commentBy = $commentBy;
 

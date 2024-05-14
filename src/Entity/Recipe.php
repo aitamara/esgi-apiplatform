@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\RecipeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 #[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
 class Recipe
 {
     #[ORM\Id]
@@ -41,9 +43,8 @@ class Recipe
 
     #[ORM\ManyToOne(inversedBy: 'recipes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?category $category = null;
+    private ?Category $category = null;
 
-    // Getters and setters
 
     public function getId(): ?int
     {
@@ -141,12 +142,12 @@ class Recipe
         return $this;
     }
 
-    public function getCategory(): ?category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(?category $category): static
+    public function setCategory(?Category $category): static
     {
         $this->category = $category;
 
